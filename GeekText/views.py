@@ -22,12 +22,26 @@ class BookViewSet(viewsets.ModelViewSet):
         Optionally restricts the returned purchases to a given user,
         by filtering against a `username` query parameter in the URL.
         """
-        queryset = Book.objects.all()
-        genre = self.request.query_params.get('genre')
-        if genre is not None:
-            queryset = queryset.filter(genre=genre)
-        return queryset
 
+        queryset = Book.objects.all()
+        genre_val = self.request.query_params.get('genre')
+        top_val = self.request.query_params.get('top')
+        rating_val = self.request.query_params.get('min_rating')
+
+        if genre_val is not None:
+            queryset = queryset.filter(genre=genre_val)
+
+        if top_val is not None:
+            if top_val == "":
+                top_val = 10
+            queryset = queryset.order_by('-sold')[:int(top_val)]
+
+        if rating_val is not None:
+            print("min rating" + rating_val)
+            #queryset = queryset.filter(genre=genre_val)
+            queryset = queryset.filter(rating__gte=float(rating_val))
+
+        return queryset
 
 
 class AuthorViewSet(viewsets.ModelViewSet):
