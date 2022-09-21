@@ -4,7 +4,7 @@ from django.db import models
 
 
 class Book(models.Model):
-    isbn = models.CharField(max_length=13, primary_key=True)
+    isbn = models.CharField(max_length=13)
     title = models.CharField(max_length=60)
     genre = models.ForeignKey('Genre', on_delete=models.CASCADE)
     sold = models.IntegerField()
