@@ -8,10 +8,37 @@ from .models import Book
 from .models import Author
 from .models import Publisher
 from .models import Genre
-
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 # Create your views here.
 
+@api_view(['GET'])
+def getBookByISBN(request, isbn, *args, **kwargs):
+    books = Book.objects.filter(isbn=isbn)
+    
+    if not books:
+        return Response({"error": "No book found with the given ISBN"})
+    else:
+        return Response(BookSerializer(
+            books[0]
+        ).data)
+
+@api_view(['GET'])
+def getAuthorBooks(request, name, *args, **kwargs):
+    author_name = name.split("+")
+    author_objs = Author.objects.filter(fName=author_name[0], lName=author_name[1])
+    all_books = Book.objects.all()
+    author_books = []
+
+    for book in all_books:
+        if book.author == author_objs[0]:
+            author_books.append(book)
+            
+    return Response(BookSerializer(
+        author_books,
+        many=True
+    ).data)
 
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all().order_by('title')
