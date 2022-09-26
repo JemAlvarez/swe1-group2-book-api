@@ -9,7 +9,10 @@ from .models import Author
 from .models import Publisher
 from .models import Genre
 from rest_framework.decorators import api_view
+from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
+from rest_framework import permissions
+import json
 
 # Create your views here.
 
@@ -40,6 +43,30 @@ def getAuthorBooks(request, name, *args, **kwargs):
         many=True
     ).data)
 
+@api_view(['GET', 'POST'])
+@permission_classes([permissions.IsAuthenticatedOrReadOnly])
+def author(request):
+    if request.method == 'GET':
+        return Response(AuthorSerializer(
+            Author.objects.all().order_by('fName'),
+            many=True
+        ).data)
+    elif request.method == 'POST':
+        body = json.loads(request.body)
+        publisher = Publisher.objects.filter(name=body['publisher'])
+
+        if publisher:
+            author = Author(
+                fName=body['fName'],
+                lName=body['lName'],
+                bio=body['bio'],
+                publisher=publisher[0]
+            )
+            author.save()
+            return Response(AuthorSerializer(author).data, status=201)
+        else:
+            return Response({"error": "Publish does not exist"}, status=400)
+
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all().order_by('title')
     serializer_class = BookSerializer
@@ -69,12 +96,6 @@ class BookViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(rating__gte=float(rating_val))
 
         return queryset
-
-
-class AuthorViewSet(viewsets.ModelViewSet):
-    queryset = Author.objects.all().order_by('fName')
-    serializer_class = AuthorSerializer
-
 
 class PublisherViewSet(viewsets.ModelViewSet):
     queryset = Publisher.objects.all().order_by('name')
