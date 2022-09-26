@@ -13,3 +13,4 @@ restapi/__pycache__/wsgi.cpython-310.pyc
 restapi/.env
 restapi/BK/
 .cache_ggshield
+.env
