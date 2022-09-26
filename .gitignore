@@ -1,4 +1,3 @@
-
 GeekText/__pycache__/__init__.cpython-310.pyc
 GeekText/__pycache__/admin.cpython-310.pyc
 GeekText/__pycache__/apps.cpython-310.pyc
@@ -13,3 +12,4 @@ restapi/__pycache__/wsgi.cpython-310.pyc
 restapi/.env
 restapi/BK/
 .cache_ggshield
+.env
