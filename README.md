@@ -12,3 +12,9 @@
 5. Copy the printed key
 6. Create a new file in the project director called `.env`
 7. In the file write `SECRET_KEY=your_key` paste the key you copied from the command line instead of `your_key`
+
+----
+> Feature 4 Docs
+* List author's books `/author/Author+Name/books`
+
+
