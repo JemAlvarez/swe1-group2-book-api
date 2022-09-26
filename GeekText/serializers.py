@@ -9,9 +9,28 @@ from .models import Publisher
 
 class BookSerializer(serializers.ModelSerializer):
 
-    author = serializers.StringRelatedField(many=False)
-    genre = serializers.StringRelatedField(many=False)
-    publisher = serializers.StringRelatedField(many=False)
+    # Use for post requests
+    genre = serializers.PrimaryKeyRelatedField(
+        many=False,
+        queryset=Genre.objects.all()
+    )
+
+    author = serializers.PrimaryKeyRelatedField(
+        many=False,
+        queryset=Author.objects.all()
+    )
+
+    publisher = serializers.PrimaryKeyRelatedField(
+        many=False,
+        queryset=Publisher.objects.all()
+    )
+
+    # vvvv Don't use that, it won't work for POST requests
+    #author = serializers.StringRelatedField(many=False)
+    #genre = serializers.StringRelatedField(many=False)
+    #publisher = serializers.StringRelatedField(many=False)
+
+
 
     class Meta:
         model = Book

@@ -1,14 +1,14 @@
 from django.db import models
 
-# Create your models here.
+# Create your models here...
 
 
 class Book(models.Model):
     isbn = models.CharField(max_length=13)
     title = models.CharField(max_length=60)
     genre = models.ForeignKey('Genre', on_delete=models.CASCADE)
-    sold = models.IntegerField()
-    rating = models.FloatField()
+    sold = models.IntegerField(default='0')
+    rating = models.FloatField(default='0')
     price = models.FloatField()
     description = models.CharField(max_length=120)
     year = models.IntegerField()
