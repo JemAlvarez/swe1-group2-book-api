@@ -15,5 +15,13 @@
 
 ----
 > Feature 4 Docs
-* Get author's books `/author/Author+Name/books`
-* Get book by ISBN `/books/:BOOK_ISBN`
+* Get author's books `/author/Author+Name/books` `(GET)`
+* Get book by ISBN `/books/:BOOK_ISBN` `(GET)`
+* Create book `books/` `(POST)`
+    * Needs authentication test admin account `administrator:password`
+        * In postman go to `Authorization>Type>Basic Authorization>Put the above info here`
+    * Needs body with json data for the book fields
+* Create author `author/` `(POST)`
+    * Needs authentication test admin account `administrator:password`
+        * In postman go to `Authorization>Type>Basic Authorization>Put the above info here`
+    * Needs body with json data for the book fields
