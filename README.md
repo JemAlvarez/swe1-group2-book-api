@@ -6,12 +6,12 @@
 
 ## Generating secret key
 1. Navigate to the project directory in the command line
-2. `python manage.py shell`
-3. `from django.core.management import utils`
-4. `print(utils.get_random_secret_key())`
-5. Copy the printed key
-6. Create a new file in the project director called `.env`
-7. In the file write `SECRET_KEY=your_key` paste the key you copied from the command line instead of `your_key`
+2. Create a new file in the project director called `.env`, in the file write `SECRET_KEY=your_key`
+3. In command line run `python manage.py shell`
+4. In command line run `from django.core.management import utils`
+5. In command line run `print(utils.get_random_secret_key())`
+6. Copy the printed key
+7. In the `.env` file paste the key you copied from the command line instead of `your_key`
 
 ----
 > Feature 4 Docs

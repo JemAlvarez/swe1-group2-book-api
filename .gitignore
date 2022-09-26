@@ -13,3 +13,4 @@ restapi/.env
 restapi/BK/
 .cache_ggshield
 .env
+*.pyc

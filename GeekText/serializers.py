@@ -9,9 +9,20 @@ from .models import Publisher
 
 class BookSerializer(serializers.ModelSerializer):
 
-    author = serializers.StringRelatedField(many=False)
-    genre = serializers.StringRelatedField(many=False)
-    publisher = serializers.StringRelatedField(many=False)
+    genre = serializers.PrimaryKeyRelatedField(
+        many=False,
+        queryset=Genre.objects.all()
+    )
+
+    author = serializers.PrimaryKeyRelatedField(
+        many=False,
+        queryset=Author.objects.all()
+    )
+
+    publisher = serializers.PrimaryKeyRelatedField(
+        many=False,
+        queryset=Publisher.objects.all()
+    )
 
     class Meta:
         model = Book
@@ -20,9 +31,14 @@ class BookSerializer(serializers.ModelSerializer):
 
 
 class AuthorSerializer(serializers.ModelSerializer):
+    publisher = serializers.PrimaryKeyRelatedField(
+        many=False,
+        queryset=Publisher.objects.all()
+    )
+
     class Meta:
         model = Author
-        fields = ('fName', 'lName', 'bio')
+        fields = ('fName', 'lName', 'bio', 'publisher')
 
 
 class PublisherSerializer(serializers.ModelSerializer):
