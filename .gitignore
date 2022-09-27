@@ -11,6 +11,7 @@ restapi/__pycache__/urls.cpython-310.pyc
 restapi/__pycache__/wsgi.cpython-310.pyc
 restapi/.env
 restapi/BK/
+.idea/
 .cache_ggshield
 .env
 *.pyc
