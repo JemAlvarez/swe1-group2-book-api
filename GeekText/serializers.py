@@ -7,34 +7,37 @@ from .models import Genre
 from .models import Publisher
 
 
-class BookSerializer(serializers.ModelSerializer):
-
-    genre = serializers.PrimaryKeyRelatedField(
-        many=False,
-        queryset=Genre.objects.all()
-    )
-
-    author = serializers.PrimaryKeyRelatedField(
-        many=False,
-        queryset=Author.objects.all()
-    )
-
-    publisher = serializers.PrimaryKeyRelatedField(
-        many=False,
-        queryset=Publisher.objects.all()
-    )
+class WishlistSerializer(serializers.ModelSerializer):
+    wishlistBooks = serializers.PrimaryKeyRelatedField(
+        many=True, queryset=Book.objects.all())
 
     class Meta:
         model = Book
-        fields = ('isbn', 'title', 'author', 'genre', 'publisher', 'year', 'description', 'price', 'sold', 'rating', 'id')
+        fields = ('isbn', 'title', 'author', 'genre', 'publisher', 'year',
+                  'description', 'price', 'sold', 'rating', 'id')
+
+
+class BookSerializer(serializers.ModelSerializer):
+
+    genre = serializers.PrimaryKeyRelatedField(many=False,
+                                               queryset=Genre.objects.all())
+
+    author = serializers.PrimaryKeyRelatedField(many=False,
+                                                queryset=Author.objects.all())
+
+    publisher = serializers.PrimaryKeyRelatedField(
+        many=False, queryset=Publisher.objects.all())
+
+    class Meta:
+        model = Book
+        fields = ('isbn', 'title', 'author', 'genre', 'publisher', 'year',
+                  'description', 'price', 'sold', 'rating', 'id')
         #fields = '__all__'
 
 
 class AuthorSerializer(serializers.ModelSerializer):
     publisher = serializers.PrimaryKeyRelatedField(
-        many=False,
-        queryset=Publisher.objects.all()
-    )
+        many=False, queryset=Publisher.objects.all())
 
     class Meta:
         model = Author
@@ -42,12 +45,14 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 
 class PublisherSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Publisher
         fields = '__all__'
 
 
 class GenreSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Genre
         fields = '__all__'
