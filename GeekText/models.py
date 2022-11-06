@@ -3,30 +3,6 @@ from django.db import models
 # Create your models here.
 
 
-class Wishlist(models.Model):
-    wishlistName = models.CharField(max_length=60)
-    owner = models.ForeignKey('User', on_delete=models.CASCADE)
-    books = models.ForeignKey('Book', on_delete=models.CASCADE)
-
-    def __str__(self):
-        return """
-        Wishlist name: %s
-        Owner: %s
-        Books: %s
-        """ % (self.wishlistName, self.owner, self.books)
-
-
-class User(models.Model):
-    username = models.CharField(max_length=30)
-    wishlists = models.ForeignKey('Wishlist', on_delete=models.CASCADE)
-
-    def __str__(self):
-        return """
-        Username: %s
-        WIshlists: %s
-        """ % (self.username, self.wishlists)
-
-
 class Book(models.Model):
     isbn = models.CharField(max_length=13)
     title = models.CharField(max_length=60)
@@ -66,3 +42,4 @@ class Genre(models.Model):
 
     def __str__(self):
         return self.name
+
