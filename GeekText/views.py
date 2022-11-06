@@ -16,20 +16,18 @@ from rest_framework import permissions
 import json
 from itertools import chain
 
-
 # Create your views here.
 
 @api_view(['GET'])
 def getBookByISBN(request, isbn, *args, **kwargs):
     books = Book.objects.filter(isbn=isbn)
-
+    
     if not books:
         return Response({"error": "No book found with the given ISBN"})
     else:
         return Response(BookSerializer(
             books[0]
         ).data)
-
 
 @api_view(['GET'])
 def getAuthorBooks(request, name, *args, **kwargs):
@@ -41,12 +39,11 @@ def getAuthorBooks(request, name, *args, **kwargs):
     for book in all_books:
         if book.author == author_objs[0]:
             author_books.append(book)
-
+            
     return Response(BookSerializer(
         author_books,
         many=True
     ).data)
-
 
 @api_view(['GET', 'POST'])
 @permission_classes([permissions.IsAuthenticatedOrReadOnly])
@@ -68,12 +65,17 @@ def book(request):
             queryset = queryset.order_by('-sold')[:int(top_val)]
 
         if rating_val is not None:
-            queryset = queryset.filter(rating__gte=float(rating_val)).order_by('-rating')
+            print("min rating" + rating_val)
+            queryset = queryset.filter(rating__gte=float(rating_val))
 
         if retrieve_qty is not None:
             if start_pos is None:
-                start_pos = "1"
+                start_pos = "0"
+
             end_pos = int(start_pos) + int(retrieve_qty) - 1
+            print("retrieve qty " + retrieve_qty)
+            print("start pos " + start_pos)
+
             queryset = queryset.filter(id__range=(int(start_pos), end_pos))
 
         return Response(BookSerializer(
@@ -86,7 +88,7 @@ def book(request):
         publisher = Publisher.objects.filter(name=body['publisher'])
         genre = Genre.objects.filter(name=body['genre'])
         author = Author.objects.filter(lName=body['author'])
-
+        
         if publisher.exists() & genre.exists() & author.exists():
             book = Book(
                 isbn=body['isbn'],
@@ -104,7 +106,6 @@ def book(request):
             return Response(BookSerializer(book).data, status=201)
         else:
             return Response({"error": "Invalid publisher, author, or genre"}, status=400)
-
 
 @api_view(['GET', 'POST'])
 @permission_classes([permissions.IsAuthenticatedOrReadOnly])
@@ -130,6 +131,41 @@ def author(request):
         else:
             return Response({"error": "Publish does not exist"}, status=400)
 
+class BookViewSet(viewsets.ModelViewSet):
+    queryset = Book.objects.all().order_by('title')
+    serializer_class = BookSerializer
+
+    def get_queryset(self):
+        queryset = Book.objects.all()
+        genre_val = self.request.query_params.get('genre')
+        top_val = self.request.query_params.get('top')
+        rating_val = self.request.query_params.get('min_rating')
+        retrieve_qty = self.request.query_params.get('retrieve')
+        start_pos = self.request.query_params.get('startpos')
+
+        if genre_val is not None:
+            queryset = queryset.filter(genre=genre_val)
+
+        if top_val is not None:
+            if top_val == "":
+                top_val = 10
+            queryset = queryset.order_by('-sold')[:int(top_val)]
+
+        if rating_val is not None:
+            print("min rating" + rating_val)
+            queryset = queryset.filter(rating__gte=float(rating_val))
+
+        if retrieve_qty is not None:
+            if start_pos is None:
+                start_pos = "0"
+
+            end_pos = int(start_pos) + int(retrieve_qty) - 1
+            print("retrieve qty " + retrieve_qty)
+            print("start pos " + start_pos)
+
+            queryset = queryset.filter(id__range=(int(start_pos), end_pos))
+
+        return queryset
 
 class PublisherViewSet(viewsets.ModelViewSet):
     queryset = Publisher.objects.all().order_by('name')

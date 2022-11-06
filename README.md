@@ -14,15 +14,6 @@
 7. In the `.env` file paste the key you copied from the command line instead of `your_key`
 
 ----
-## Features Usage
-> Feature 1 Docs
-* Retrieve List of Books by Genre `/books?genre=parameter` `(GET)`
-* Retrieve List of Top Sellers (This will retrieve top 10 books by default in descending order) `/books?top=` `(GET)`
-    * Retrieve List of Top X Sellers (Retrieve an specific quantity in descending order) `/books?top=quantity` `(GET)`
-* Retrieve List of Books for a particular rating and higher (In descending rating order) `/books?min_rating=parameter` `(GET)`
-* Retrieve List of X books at a time from Y position in the recordset `/books?retrieve=X&startpos=Y` `(GET)`
-    * If no startpos value if used, it will retrieve X books starting from recordset position 1
-
 > Feature 4 Docs
 * Get author's books `/author/Author+Name/books` `(GET)`
 * Get book by ISBN `/books/:BOOK_ISBN` `(GET)`
