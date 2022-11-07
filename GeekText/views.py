@@ -6,6 +6,7 @@ from .serializers import AuthorSerializer
 from .serializers import PublisherSerializer
 from .serializers import GenreSerializer
 from .serializers import WishlistSerializer
+from .serializers import UserSerializer
 from .models import Book
 from .models import Author
 from .models import Publisher
@@ -17,6 +18,8 @@ from rest_framework.response import Response
 from rest_framework import permissions
 import json
 from itertools import chain
+from django.contrib.auth import get_user_model
+from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 
@@ -141,3 +144,8 @@ class PublisherViewSet(viewsets.ModelViewSet):
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all().order_by('name')
     serializer_class = GenreSerializer
+
+class UsersViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializer
+    queryset = get_user_model().objects.all()
