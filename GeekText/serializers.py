@@ -5,6 +5,7 @@ from .models import Book
 from .models import Author
 from .models import Genre
 from .models import Publisher
+from .models import RatingBooks
 
 
 class WishlistSerializer(serializers.ModelSerializer):
@@ -55,4 +56,9 @@ class GenreSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Genre
+        fields = '__all__'
+
+ class RatingBooksSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = RatingBooks
         fields = '__all__'
