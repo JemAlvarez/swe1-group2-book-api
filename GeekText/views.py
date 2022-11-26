@@ -6,11 +6,13 @@ from .serializers import AuthorSerializer
 from .serializers import PublisherSerializer
 from .serializers import GenreSerializer
 from .serializers import WishlistSerializer
+from .serializers import RatingBooksSerializers
 from .models import Book
 from .models import Author
 from .models import Publisher
 from .models import Genre
 from .models import Wishlist
+from .models import RatingBooks
 from rest_framework.decorators import api_view
 from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
@@ -141,3 +143,9 @@ class PublisherViewSet(viewsets.ModelViewSet):
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all().order_by('name')
     serializer_class = GenreSerializer
+    
+    # Create your views here.
+
+class RatingViewSets(viewsets.ModelViewSet):
+    queryset = RatingBooks.objects.all()
+    serializer_class = RatingBooksSerializers    
