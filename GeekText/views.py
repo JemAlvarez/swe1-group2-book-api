@@ -25,16 +25,42 @@ from rest_framework.permissions import IsAuthenticated
 
 
 @api_view(['GET'])
-def getWishlistByUser(request, user, *args, **kwargs):
-    wishlist = Wishlist.objects.filter(user=user)
+def getAllWishLists(request, user, *args, **kwargs):
+    wishlist = Wishlist.objects.filter(owner_id=user)
 
     if not wishlist:
         return Response({"error": "No wishlist found for given user."})
     else:
-        return Response(WishlistSerializer)
+        return Response(WishlistSerializer(wishlist, many=True).data)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'DELETE', 'POST'])
+def wishlist(request, user, wishlist_name, *args, **kwargs):
+    if request.method == 'GET':
+        wishlist = Wishlist.objects.filter(
+            owner_id=user, wishlist_name=wishlist_name)
+
+        if not wishlist:
+            return Response({"error": "No wishlist found for given user."})
+        else:
+            return Response(WishlistSerializer(wishlist, many=True).data)
+    elif request.method == 'POST':
+        body = json.loads(request.body)
+        books = Wishlist.objects.create(
+            wishlist_name=wishlist_name, books_id=body["book_id"], owner_id=user)
+        books.save()
+
+        return Response(WishlistSerializer(books).data, status=201)
+    elif request.method == 'DELETE':
+        body = json.loads(request.body)
+        books = Wishlist.objects.filter(
+            wishlist_name=wishlist_name, books_id=body["book_id"], owner_id=user)
+        books.delete()
+
+        return Response({"message": "Successfully deleted book in wishlist"}, status=200)
+
+
+@ api_view(['GET'])
 def getBookByISBN(request, isbn, *args, **kwargs):
     books = Book.objects.filter(isbn=isbn)
 
@@ -44,7 +70,7 @@ def getBookByISBN(request, isbn, *args, **kwargs):
         return Response(BookSerializer(books[0]).data)
 
 
-@api_view(['GET'])
+@ api_view(['GET'])
 def getAuthorBooks(request, name, *args, **kwargs):
     author_name = name.split("+")
     author_objs = Author.objects.filter(fName=author_name[0],
@@ -59,8 +85,8 @@ def getAuthorBooks(request, name, *args, **kwargs):
     return Response(BookSerializer(author_books, many=True).data)
 
 
-@api_view(['GET', 'POST'])
-@permission_classes([permissions.IsAuthenticatedOrReadOnly])
+@ api_view(['GET', 'POST'])
+@ permission_classes([permissions.IsAuthenticatedOrReadOnly])
 def book(request):
     if request.method == 'GET':
         queryset = Book.objects.all()
@@ -114,8 +140,8 @@ def book(request):
                             status=400)
 
 
-@api_view(['GET', 'POST'])
-@permission_classes([permissions.IsAuthenticatedOrReadOnly])
+@ api_view(['GET', 'POST'])
+@ permission_classes([permissions.IsAuthenticatedOrReadOnly])
 def author(request):
     if request.method == 'GET':
         return Response(
@@ -145,7 +171,13 @@ class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all().order_by('name')
     serializer_class = GenreSerializer
 
+
 class UsersViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
     queryset = get_user_model().objects.all()
+
+
+class WishlistViewSet(viewsets.ModelViewSet):
+    queryset = Wishlist.objects.all()
+    serializer_class = WishlistSerializer

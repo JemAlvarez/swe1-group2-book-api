@@ -16,14 +16,16 @@ class Migration(migrations.Migration):
             name='Author',
             fields=[
                 ('fName', models.CharField(max_length=60)),
-                ('lName', models.CharField(max_length=60, primary_key=True, serialize=False)),
+                ('lName', models.CharField(max_length=60,
+                 primary_key=True, serialize=False)),
                 ('bio', models.CharField(max_length=120)),
             ],
         ),
         migrations.CreateModel(
             name='Book',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('isbn', models.CharField(max_length=13)),
                 ('title', models.CharField(max_length=60)),
                 ('sold', models.IntegerField(default='0')),
@@ -31,55 +33,60 @@ class Migration(migrations.Migration):
                 ('price', models.FloatField()),
                 ('description', models.CharField(max_length=120)),
                 ('year', models.IntegerField()),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='GeekText.author')),
+                ('author', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='GeekText.author')),
             ],
         ),
         migrations.CreateModel(
             name='Genre',
             fields=[
-                ('name', models.CharField(max_length=60, primary_key=True, serialize=False)),
+                ('name', models.CharField(max_length=60,
+                 primary_key=True, serialize=False)),
             ],
         ),
         migrations.CreateModel(
             name='Publisher',
             fields=[
-                ('name', models.CharField(max_length=60, primary_key=True, serialize=False)),
+                ('name', models.CharField(max_length=60,
+                 primary_key=True, serialize=False)),
             ],
         ),
         migrations.CreateModel(
             name='User',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('username', models.CharField(max_length=30)),
             ],
         ),
         migrations.CreateModel(
             name='Wishlist',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('wishlistName', models.CharField(max_length=60)),
-                ('books', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='GeekText.book')),
-                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='GeekText.user')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('wishlist_name', models.CharField(max_length=60)),
+                ('books', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='GeekText.book')),
+                ('owner', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='GeekText.user')),
             ],
-        ),
-        migrations.AddField(
-            model_name='user',
-            name='wishlists',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='GeekText.wishlist'),
         ),
         migrations.AddField(
             model_name='book',
             name='genre',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='GeekText.genre'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to='GeekText.genre'),
         ),
         migrations.AddField(
             model_name='book',
             name='publisher',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='GeekText.publisher'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to='GeekText.publisher'),
         ),
         migrations.AddField(
             model_name='author',
             name='publisher',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='GeekText.publisher'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to='GeekText.publisher'),
         ),
     ]
