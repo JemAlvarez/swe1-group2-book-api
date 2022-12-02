@@ -4,27 +4,25 @@ from django.db import models
 
 
 class Wishlist(models.Model):
-    wishlistName = models.CharField(max_length=60)
-    owner = models.ForeignKey('User', on_delete=models.CASCADE)
+    wishlist_name = models.CharField(max_length=60)
     books = models.ForeignKey('Book', on_delete=models.CASCADE)
+    owner = models.ForeignKey('User', on_delete=models.CASCADE)
 
     def __str__(self):
         return """
-        Wishlist name: %s
-        Owner: %s
-        Books: %s
-        """ % (self.wishlistName, self.owner, self.books)
+        Wishlist Name: %s
+        Books List: %s
+        Owner ID: %s
+        """ % (self.wishlist_name, self.books, self.owner)
 
 
 class User(models.Model):
     username = models.CharField(max_length=30)
-    wishlists = models.ForeignKey('Wishlist', on_delete=models.CASCADE)
 
     def __str__(self):
         return """
         Username: %s
-        WIshlists: %s
-        """ % (self.username, self.wishlists)
+        """ % (self.username)
 
 
 class Book(models.Model):

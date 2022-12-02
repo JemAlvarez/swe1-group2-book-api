@@ -11,6 +11,7 @@ router = routers.DefaultRouter()
 router.register(r'publisher', views.PublisherViewSet)
 router.register(r'genre', views.GenreViewSet)
 router.register(r'user', views.UsersViewSet)
+router.register(r'wishlist', views.WishlistViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
@@ -22,7 +23,8 @@ urlpatterns = [
     path('author/<str:name>/books', views.getAuthorBooks),
     path('api-auth/', include('rest_framework.urls',
                               namespace='rest_framework')),
-    path('wishlist/<str:user>', views.getWishlistByUser),
-        path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('wishlist/<str:user>', views.getAllWishLists),
+    path('wishlist/<str:user>/<str:wishlist_name>', views.wishlist),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

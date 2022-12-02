@@ -5,16 +5,14 @@ from .models import Book
 from .models import Author
 from .models import Genre
 from .models import Publisher
+from .models import Wishlist
 from django.contrib.auth import get_user_model
 
-class WishlistSerializer(serializers.ModelSerializer):
-    wishlistBooks = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=Book.objects.all())
 
+class WishlistSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Book
-        fields = ('isbn', 'title', 'author', 'genre', 'publisher', 'year',
-                  'description', 'price', 'sold', 'rating', 'id')
+        model = Wishlist
+        fields = '__all__'
 
 
 class BookSerializer(serializers.ModelSerializer):
@@ -56,6 +54,7 @@ class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
         fields = '__all__'
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
