@@ -5,6 +5,7 @@ from .models import Book
 from .models import Author
 from .models import Genre
 from .models import Publisher
+from .models import RatingBooks
 from .models import Wishlist
 from django.contrib.auth import get_user_model
 
@@ -55,6 +56,9 @@ class GenreSerializer(serializers.ModelSerializer):
         model = Genre
         fields = '__all__'
 
+ class RatingBooksSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = RatingBooks
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
