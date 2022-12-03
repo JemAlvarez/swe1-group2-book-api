@@ -25,7 +25,6 @@ urlpatterns = [
     path('author/<str:name>/books', views.getAuthorBooks),
     path('api-auth/', include('rest_framework.urls',
                               namespace='rest_framework')),
-    path('wishlist/<str:user>', views.getWishlistByUser),
     path('api/', include(router.urls)), 
     path('wishlist/<str:user>', views.getAllWishLists),
     path('wishlist/<str:user>/<str:wishlist_name>', views.wishlist),

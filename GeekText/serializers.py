@@ -51,12 +51,11 @@ class PublisherSerializer(serializers.ModelSerializer):
 
 
 class GenreSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Genre
         fields = '__all__'
 
- class RatingBooksSerializers(serializers.ModelSerializer):
+class RatingBooksSerializers(serializers.ModelSerializer):
     class Meta:
         model = RatingBooks
 
